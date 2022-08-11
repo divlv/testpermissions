@@ -31,7 +31,7 @@ jobs:
 
   # Correct branch and command message gate:
   workflow_allowed:
-    environment: privileged_users_env
+    environment: deploy_to_production
     env:
       #CICD_PASSWORD: 123
       CICD_PASSWORD: ${{ secrets.CICD_PASSWORD_FROM_ENV }}
