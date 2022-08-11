@@ -1,0 +1,46 @@
+name: Deployment Permissions Test
+
+on:
+  #
+  # Branch (master) checked later - in "workflow_allowed" section.
+  #
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Type CICD password to start'
+        required: true
+        default: '...'
+      DeploySettingsOnly:
+        type: boolean
+        description: Deploy settings ONLY!
+        required: false
+      DeployAllServices:
+        type: boolean
+        description: Deploy ALL services
+        required: false
+      choice:
+        type: choice
+        description: Deploy service
+        options:
+          - Service 1
+          - Service 2
+        required: false
+
+
+jobs:
+
+  # Correct branch and command message gate:
+  workflow_allowed:
+    env:
+      CICD_PASSWORD: 123
+      #CICD_PASSWORD: ${{ secrets.CICD_PASSWORD }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+        id: extract_branch
+      - run: |
+          echo "Incorrect password entered or incorrect branch for this workflow (\"main\" expected)"
+          exit 1
+        if: "github.event.inputs.command != env.CICD_PASSWORD || steps.extract_branch.outputs.branch != 'main'"
