@@ -31,9 +31,10 @@ jobs:
 
   # Correct branch and command message gate:
   workflow_allowed:
+    environment: privileged_users_env
     env:
-      CICD_PASSWORD: 123
-      #CICD_PASSWORD: ${{ secrets.CICD_PASSWORD }}
+      #CICD_PASSWORD: 123
+      CICD_PASSWORD: ${{ secrets.CICD_PASSWORD_FROM_ENV }}
     runs-on: ubuntu-latest
     steps:
       - name: Extract branch name
